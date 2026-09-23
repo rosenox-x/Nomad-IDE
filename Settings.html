@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - Project: core-engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#c0c7d1",
+                      "surface": "#0f131b",
+                      "on-surface": "#dfe2ed",
+                      "outline": "#8a919b",
+                      "surface-variant": "#31353d",
+                      "tertiary-fixed": "#c3f0a1",
+                      "on-primary-container": "#004167",
+                      "on-primary-fixed-variant": "#004a75",
+                      "tertiary": "#a7d387",
+                      "on-secondary-fixed-variant": "#6d2486",
+                      "primary-fixed": "#cde5ff",
+                      "secondary": "#f0b0ff",
+                      "primary-fixed-dim": "#95ccff",
+                      "tertiary-fixed-dim": "#a7d387",
+                      "surface-container-high": "#262a32",
+                      "surface-container-lowest": "#0a0e15",
+                      "on-error": "#690005",
+                      "outline-variant": "#404750",
+                      "secondary-container": "#6d2486",
+                      "on-tertiary-fixed": "#0a2100",
+                      "inverse-primary": "#006399",
+                      "surface-container-highest": "#31353d",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#95ccff",
+                      "tertiary-container": "#8bb56c",
+                      "on-primary-fixed": "#001d32",
+                      "primary-container": "#61afef",
+                      "on-primary": "#003352",
+                      "background": "#0f131b",
+                      "secondary-fixed-dim": "#f0b0ff",
+                      "on-background": "#dfe2ed",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#2b5013",
+                      "secondary-fixed": "#fad7ff",
+                      "surface-container": "#1c2027",
+                      "surface-dim": "#0f131b",
+                      "primary": "#95ccff",
+                      "error": "#ffb4ab",
+                      "on-tertiary": "#163800",
+                      "inverse-surface": "#dfe2ed",
+                      "on-tertiary-container": "#23460a",
+                      "on-secondary-container": "#e796fe",
+                      "inverse-on-surface": "#2c3039",
+                      "on-secondary": "#54016d",
+                      "surface-bright": "#353942",
+                      "surface-container-low": "#181c23",
+                      "on-secondary-fixed": "#330044"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "edge-margin": "12px",
+                      "touch-target": "44px",
+                      "unit": "4px",
+                      "gutter": "8px"
+              },
+              "fontFamily": {
+                      "code-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "code-md": [
+                              "13px",
+                              {
+                                      "lineHeight": "19px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "code-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "10px",
+                              {
+                                      "lineHeight": "12px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        /* Custom toggle switch styling */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #61afef;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #61afef;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md text-body-md h-screen w-screen overflow-hidden flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary w-full top-0 border-b border-outline-variant flex justify-between items-center px-edge-margin h-touch-target shrink-0 z-10 md:hidden">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<h1 class="font-headline-lg font-bold text-primary">Project: core-engine</h1>
+</div>
+<button class="flex items-center text-primary hover:bg-surface-variant transition-colors duration-200 rounded px-2 py-1">
+<span class="font-body-md text-body-md">Run</span>
+</button>
+</header>
+<!-- Main Layout Area -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- NavigationDrawer (Web) -->
+<nav class="hidden md:flex flex-col h-full w-64 left-0 border-r border-outline-variant bg-surface-container-low p-gutter shrink-0 z-10">
+<h2 class="font-headline-lg text-primary px-3 mb-4 mt-2">Secondary Tools</h2>
+<ul class="flex flex-col gap-1 w-full font-body-md text-body-md">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span>Git Branches</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span>Terminal</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="error">error</span>
+<span>Problems</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span>Output</span>
+</a>
+</li>
+<li class="mt-auto">
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container rounded-lg transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</li>
+</ul>
+</nav>
+<!-- Canvas Area (Settings Content) -->
+<main class="flex-1 overflow-y-auto bg-background pb-20 md:pb-0 scroll-smooth">
+<div class="max-w-3xl mx-auto px-edge-margin py-6 flex flex-col gap-8">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Settings</h2>
+<!-- Appearance Section -->
+<section class="flex flex-col gap-2">
+<h3 class="font-label-caps text-label-caps text-primary uppercase tracking-wider mb-1 px-1">Appearance</h3>
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<!-- Theme Toggle -->
+<div class="flex items-center justify-between p-4 border-b border-outline-variant hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">palette</span>
+<span class="font-body-md text-on-surface">Dark Theme</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface border-4 appearance-none cursor-pointer border-outline-variant" id="theme-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer" for="theme-toggle"></label>
+</div>
+</div>
+<!-- Font Size -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">format_size</span>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">Editor Font Size</span>
+<span class="font-code-sm text-on-surface-variant">13px</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Editor Section -->
+<section class="flex flex-col gap-2">
+<h3 class="font-label-caps text-label-caps text-primary uppercase tracking-wider mb-1 px-1">Editor</h3>
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<!-- Auto-save Toggle -->
+<div class="flex items-center justify-between p-4 border-b border-outline-variant hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">save</span>
+<span class="font-body-md text-on-surface">Auto-save on delay</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface border-4 appearance-none cursor-pointer border-outline-variant" id="autosave-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer" for="autosave-toggle"></label>
+</div>
+</div>
+<!-- Line Numbers Toggle -->
+<div class="flex items-center justify-between p-4 border-b border-outline-variant hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">format_list_numbered</span>
+<span class="font-body-md text-on-surface">Show Line Numbers</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface border-4 appearance-none cursor-pointer border-outline-variant" id="linenumbers-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer" for="linenumbers-toggle"></label>
+</div>
+</div>
+<!-- Word Wrap Toggle -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">wrap_text</span>
+<span class="font-body-md text-on-surface">Word Wrap</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface border-4 appearance-none cursor-pointer border-outline-variant" id="wordwrap-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer" for="wordwrap-toggle"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Compiler Section -->
+<section class="flex flex-col gap-2">
+<h3 class="font-label-caps text-label-caps text-primary uppercase tracking-wider mb-1 px-1">Compiler Environments</h3>
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<!-- Java Version -->
+<div class="flex items-center justify-between p-4 border-b border-outline-variant hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">coffee</span>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">Java SDK</span>
+<span class="font-code-sm text-on-surface-variant">OpenJDK 17.0.2</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- Python Interpreter -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">terminal</span>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">Python Interpreter</span>
+<span class="font-code-sm text-on-surface-variant">Python 3.10.12 (venv)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Account Section -->
+<section class="flex flex-col gap-2 mb-12">
+<h3 class="font-label-caps text-label-caps text-primary uppercase tracking-wider mb-1 px-1">Account</h3>
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<!-- Profile -->
+<div class="flex items-center justify-between p-4 border-b border-outline-variant hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-headline-lg">
+                                    JD
+                                </div>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">John Doe</span>
+<span class="font-code-sm text-on-surface-variant">john.doe@example.com</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- Sync Settings Toggle -->
+<div class="flex items-center justify-between p-4 border-b border-outline-variant hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">sync</span>
+<span class="font-body-md text-on-surface">Sync Settings</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface border-4 appearance-none cursor-pointer border-outline-variant" id="sync-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer" for="sync-toggle"></label>
+</div>
+</div>
+<!-- Sign Out -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error">logout</span>
+<span class="font-body-md text-error">Sign Out</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface-container border-t border-outline-variant flex justify-around items-center h-14">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-16 group" href="#">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+<span class="font-label-caps text-label-caps mt-1">Editor</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-16 group" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps text-label-caps mt-1">Explorer</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-16 group" href="#">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+<span class="font-label-caps text-label-caps mt-1">Run</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-95 transition-transform group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

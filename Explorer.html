@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c0c7d1",
+                        "surface": "#0f131b",
+                        "on-surface": "#dfe2ed",
+                        "outline": "#8a919b",
+                        "surface-variant": "#31353d",
+                        "tertiary-fixed": "#c3f0a1",
+                        "on-primary-container": "#004167",
+                        "on-primary-fixed-variant": "#004a75",
+                        "tertiary": "#a7d387",
+                        "on-secondary-fixed-variant": "#6d2486",
+                        "primary-fixed": "#cde5ff",
+                        "secondary": "#f0b0ff",
+                        "primary-fixed-dim": "#95ccff",
+                        "tertiary-fixed-dim": "#a7d387",
+                        "surface-container-high": "#262a32",
+                        "surface-container-lowest": "#0a0e15",
+                        "on-error": "#690005",
+                        "outline-variant": "#404750",
+                        "secondary-container": "#6d2486",
+                        "on-tertiary-fixed": "#0a2100",
+                        "inverse-primary": "#006399",
+                        "surface-container-highest": "#31353d",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#95ccff",
+                        "tertiary-container": "#8bb56c",
+                        "on-primary-fixed": "#001d32",
+                        "primary-container": "#61afef",
+                        "on-primary": "#003352",
+                        "background": "#0f131b",
+                        "secondary-fixed-dim": "#f0b0ff",
+                        "on-background": "#dfe2ed",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#2b5013",
+                        "secondary-fixed": "#fad7ff",
+                        "surface-container": "#1c2027",
+                        "surface-dim": "#0f131b",
+                        "primary": "#95ccff",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#163800",
+                        "inverse-surface": "#dfe2ed",
+                        "on-tertiary-container": "#23460a",
+                        "on-secondary-container": "#e796fe",
+                        "inverse-on-surface": "#2c3039",
+                        "on-secondary": "#54016d",
+                        "surface-bright": "#353942",
+                        "surface-container-low": "#181c23",
+                        "on-secondary-fixed": "#330044"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "edge-margin": "12px",
+                        "touch-target": "44px",
+                        "unit": "4px",
+                        "gutter": "8px"
+                    },
+                    "fontFamily": {
+                        "code-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "code-md": ["13px", { "lineHeight": "19px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "code-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-caps": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .file-list-item:hover { background-color: var(--tw-colors-surface-variant); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md text-body-md md:flex-row">
+<!-- TopAppBar for Mobile -->
+<header class="md:hidden flex justify-between items-center px-edge-margin h-touch-target bg-surface text-primary border-b border-outline-variant w-full top-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">menu</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Project: core-engine</span>
+</div>
+<button class="hover:bg-surface-variant transition-colors duration-200 px-3 py-1 rounded">
+            Run
+        </button>
+</header>
+<!-- SideNav for Web (Replaces TopAppBar/BottomNavBar on Desktop) -->
+<aside class="hidden md:flex flex-col p-gutter h-full w-64 left-0 bg-surface-container-low text-primary border-r border-outline-variant">
+<div class="font-headline-lg text-primary mb-6 px-2 font-bold tracking-tight">core-engine</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded" href="#">
+<span class="material-symbols-outlined">code</span> Editor
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container rounded-lg transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_open</span> Explorer
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded" href="#">
+<span class="material-symbols-outlined">play_arrow</span> Run
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<div class="font-body-md text-body-md text-on-surface-variant px-2 mb-2 font-semibold">Secondary Tools</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded text-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">account_tree</span> Git Branches
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded text-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">terminal</span> Terminal
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded text-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">error</span> Problems
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 rounded text-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">list_alt</span> Output
+                </a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-[calc(100vh-theme(spacing.touch-target)-3.5rem)] md:h-screen overflow-hidden">
+<!-- Explorer Header Actions -->
+<div class="flex justify-between items-center px-4 py-3 border-b border-outline-variant bg-surface-container">
+<div class="font-code-md text-code-md font-semibold tracking-wide text-on-surface">EXPLORER</div>
+</div>
+<!-- File List -->
+<div class="flex-1 overflow-y-auto font-code-md bg-surface-container-lowest pb-16 md:pb-0">
+<div class="flex flex-col py-2">
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer bg-surface-variant border-l-4 border-primary file-list-item">
+<span class="material-symbols-outlined text-[24px] text-primary">integration_instructions</span>
+<span class="text-[15px] text-primary font-bold">Main.java</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-primary">integration_instructions</span>
+<span class="text-[15px] text-on-surface">ConfigManager.java</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-secondary">code</span>
+<span class="text-[15px] text-on-surface">utils.py</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-secondary">code</span>
+<span class="text-[15px] text-on-surface">helpers.py</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-error">bug_report</span>
+<span class="text-[15px] text-on-surface">MainTest.java</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-error">bug_report</span>
+<span class="text-[15px] text-on-surface">test_utils.py</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-outline">description</span>
+<span class="text-[15px] text-on-surface-variant">README.md</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-outline">settings</span>
+<span class="text-[15px] text-on-surface-variant">.gitignore</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer border-l-4 border-transparent file-list-item">
+<span class="material-symbols-outlined text-[24px] text-outline">build</span>
+<span class="text-[15px] text-on-surface-variant">build.gradle</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar for Mobile -->
+<nav class="md:hidden flex justify-around items-center h-14 w-full bg-surface-container text-primary font-label-caps text-label-caps fixed bottom-0 z-50 border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-1/4 h-full" href="#">
+<span class="material-symbols-outlined mb-1">code</span>
+            Editor
+        </a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+            Explorer
+        </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-1/4 h-full" href="#">
+<span class="material-symbols-outlined mb-1">play_arrow</span>
+            Run
+        </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-1/4 h-full" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+            Settings
+        </a>
+</nav>
+</body></html>

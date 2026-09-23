@@ -1,0 +1,11 @@
+ide-project-root/
+├── .agents/
+│   ├── rules/
+│   │   ├── architecture.md       # Enforces the core tech stack and logic
+│   │   └── ui-guidelines.md      # Enforces your design and aesthetic rules
+│   └── skills/
+│       └── syntax-handling/
+│           ├── SKILL.md          # Teaches the agent how to process Java/Python
+│           └── scripts/          # Optional helper scripts for the agent
+├── app/                          # Standard Android app directory
+└── prompt.md                     # The initialization prompt to feed the agent

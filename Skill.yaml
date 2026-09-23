@@ -1,0 +1,15 @@
+---
+name: syntax-handling
+description: Handles the setup and configuration for syntax highlighting and language-specific features for Java and Python.
+---
+# Syntax Handling
+
+## When to use this skill
+- Use this when modifying the code editor UI component.
+- Use this when implementing syntax highlighting, auto-completion, or formatting logic.
+
+## How to use it
+1. **Language Detection:** Always write logic to parse the file extension (`.py` vs `.java`) before applying a syntax schema.
+2. **Python Conventions:** When applying Python logic, ensure the editor handles 4-space indentation automatically upon pressing the enter key.
+3. **Java Conventions:** When applying Java logic, ensure the editor automatically inserts closing braces `}` and semi-colons `;` where contextually appropriate.
+4. **Performance:** Never run Regex-based syntax highlighting on the main UI thread. Always process text spans asynchronously to prevent typing lag.

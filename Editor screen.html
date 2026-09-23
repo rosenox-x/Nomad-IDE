@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Java Mobile Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c0c7d1",
+                        "surface": "#0f131b",
+                        "on-surface": "#dfe2ed",
+                        "outline": "#8a919b",
+                        "surface-variant": "#31353d",
+                        "tertiary-fixed": "#c3f0a1",
+                        "on-primary-container": "#004167",
+                        "on-primary-fixed-variant": "#004a75",
+                        "tertiary": "#a7d387",
+                        "on-secondary-fixed-variant": "#6d2486",
+                        "primary-fixed": "#cde5ff",
+                        "secondary": "#f0b0ff",
+                        "primary-fixed-dim": "#95ccff",
+                        "tertiary-fixed-dim": "#a7d387",
+                        "surface-container-high": "#262a32",
+                        "surface-container-lowest": "#0a0e15",
+                        "on-error": "#690005",
+                        "outline-variant": "#404750",
+                        "secondary-container": "#6d2486",
+                        "on-tertiary-fixed": "#0a2100",
+                        "inverse-primary": "#006399",
+                        "surface-container-highest": "#31353d",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#95ccff",
+                        "tertiary-container": "#8bb56c",
+                        "on-primary-fixed": "#001d32",
+                        "primary-container": "#61afef",
+                        "on-primary": "#003352",
+                        "background": "#0f131b",
+                        "secondary-fixed-dim": "#f0b0ff",
+                        "on-background": "#dfe2ed",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#2b5013",
+                        "secondary-fixed": "#fad7ff",
+                        "surface-container": "#1c2027",
+                        "surface-dim": "#0f131b",
+                        "primary": "#95ccff",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#163800",
+                        "inverse-surface": "#dfe2ed",
+                        "on-tertiary-container": "#23460a",
+                        "on-secondary-container": "#e796fe",
+                        "inverse-on-surface": "#2c3039",
+                        "on-secondary": "#54016d",
+                        "surface-bright": "#353942",
+                        "surface-container-low": "#181c23",
+                        "on-secondary-fixed": "#330044"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "edge-margin": "12px",
+                        "touch-target": "44px",
+                        "unit": "4px",
+                        "gutter": "8px"
+                    },
+                    "fontFamily": {
+                        "code-md": [
+                            "JetBrains Mono"
+                        ],
+                        "body-md": [
+                            "Inter"
+                        ],
+                        "code-sm": [
+                            "JetBrains Mono"
+                        ],
+                        "headline-lg": [
+                            "Inter"
+                        ],
+                        "label-caps": [
+                            "Inter"
+                        ]
+                    },
+                    "fontSize": {
+                        "code-md": [
+                            "13px",
+                            {
+                                "lineHeight": "19px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "body-md": [
+                            "14px",
+                            {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "code-sm": [
+                            "11px",
+                            {
+                                "lineHeight": "16px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-lg": [
+                            "20px",
+                            {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "label-caps": [
+                            "10px",
+                            {
+                                "lineHeight": "12px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .syntax-keyword { color: #8bb56c; } /* Muted green */
+        .syntax-string { color: #a7d387; } /* Lighter green */
+        .syntax-class { color: #dfe2ed; } /* Text color */
+        .syntax-method { color: #95ccff; } /* Primary */
+        .syntax-comment { color: #8a919b; } /* Outline */
+        .syntax-punctuation { color: #8a919b; } /* Outline */
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary border-b border-outline-variant transition-colors duration-200 flex justify-between items-center px-edge-margin h-touch-target shrink-0 w-full top-0 z-10">
+<div class="flex items-center gap-gutter">
+<h1 class="font-headline-lg font-bold text-on-surface">Main.java</h1>
+</div>
+<button class="bg-primary text-on-primary hover:bg-primary-fixed-dim px-4 py-1.5 rounded-full flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Run</span>
+</button>
+</header>
+<!-- Editor Canvas -->
+<main class="flex-1 flex overflow-hidden bg-[#1E2227] relative">
+<!-- Line Numbers (Gutter) -->
+<div class="w-10 shrink-0 bg-[#21252B] border-r border-[#3E4451] flex flex-col items-end pr-2 py-4 font-code-sm text-code-sm text-[#4B5263] select-none overflow-y-auto" id="line-numbers">
+<div class="h-[19px]">1</div>
+<div class="h-[19px]">2</div>
+<div class="h-[19px]">3</div>
+<div class="h-[19px] text-primary-container bg-[#2C313A]/50 w-full text-right pr-2">4</div>
+<div class="h-[19px]">5</div>
+<div class="h-[19px]">6</div>
+<div class="h-[19px]">7</div>
+<div class="h-[19px]">8</div>
+<div class="h-[19px]">9</div>
+<div class="h-[19px]">10</div>
+<div class="h-[19px]">11</div>
+<div class="h-[19px]">12</div>
+</div>
+<!-- Code Area -->
+<div class="flex-1 overflow-auto py-4 pl-4 pr-edge-margin font-code-md text-code-md text-[#ABB2BF] whitespace-pre font-code-md" id="code-area">
+<span class="syntax-keyword">public</span> <span class="syntax-keyword">class</span> <span class="syntax-class">Main</span> <span class="syntax-punctuation">{</span>
+<span class="syntax-keyword">public</span> <span class="syntax-keyword">static</span> <span class="syntax-keyword">void</span> <span class="syntax-method">main</span><span class="syntax-punctuation">(</span><span class="syntax-class">String</span><span class="syntax-punctuation">[]</span> args<span class="syntax-punctuation">)</span> <span class="syntax-punctuation">{</span>
+<span class="syntax-comment">// Output greeting to console</span>
+<div class="bg-[#2C313A]/50 -ml-4 pl-4 py-[0px] inline-block min-w-full"> <span class="syntax-class">System</span><span class="syntax-punctuation">.</span>out<span class="syntax-punctuation">.</span><span class="syntax-method">println</span><span class="syntax-punctuation">(</span><span class="syntax-string">"Hello, Mobile IDE!"</span><span class="syntax-punctuation">);</span><span class="w-[2px] h-[15px] bg-primary-container inline-block animate-pulse align-middle ml-[1px]"></span></div>
+<span class="syntax-keyword">int</span> count <span class="syntax-punctuation">=</span> <span class="syntax-punctuation">5</span><span class="syntax-punctuation">;</span>
+<span class="syntax-keyword">for</span> <span class="syntax-punctuation">(</span><span class="syntax-keyword">int</span> i <span class="syntax-punctuation">=</span> <span class="syntax-punctuation">0</span><span class="syntax-punctuation">;</span> i <span class="syntax-punctuation">&lt;</span> count<span class="syntax-punctuation">;</span> i<span class="syntax-punctuation">++)</span> <span class="syntax-punctuation">{</span>
+<span class="syntax-class">System</span><span class="syntax-punctuation">.</span>out<span class="syntax-punctuation">.</span><span class="syntax-method">println</span><span class="syntax-punctuation">(</span><span class="syntax-string">"Iteration: "</span> <span class="syntax-punctuation">+</span> i<span class="syntax-punctuation">);</span>
+<span class="syntax-punctuation">}</span>
+<span class="syntax-punctuation">}</span>
+<span class="syntax-punctuation">}</span>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container border-t border-outline-variant fixed bottom-0 w-full z-50 flex justify-around items-center h-14 shrink-0 md:hidden pb-safe">
+<!-- Code (Active) -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-95 transition-transform hover:text-primary min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-0.5" style="font-variation-settings: 'FILL' 1;">code</span>
+<span class="font-label-caps text-label-caps">Code</span>
+</button>
+<!-- Files (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-0.5">folder_open</span>
+<span class="font-label-caps text-label-caps">Files</span>
+</button>
+<!-- Run (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform min-w-[64px]">
+<span class="material-symbols-outlined text-[24px] mb-0.5">play_arrow</span>
+<span class="font-label-caps text-label-caps">Run</span>
+</button>
+</nav>
+<script>
+        // Synchronize scrolling between code area and line numbers
+        const codeArea = document.getElementById('code-area');
+        const lineNumbers = document.getElementById('line-numbers');
+        
+        if(codeArea && lineNumbers) {
+            codeArea.addEventListener('scroll', () => {
+                lineNumbers.scrollTop = codeArea.scrollTop;
+            });
+        }
+    </script>
+</body></html>

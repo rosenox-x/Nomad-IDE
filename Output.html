@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IDE Run Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c0c7d1",
+                        "surface": "#0f131b",
+                        "on-surface": "#dfe2ed",
+                        "outline": "#8a919b",
+                        "surface-variant": "#31353d",
+                        "tertiary-fixed": "#c3f0a1",
+                        "on-primary-container": "#004167",
+                        "on-primary-fixed-variant": "#004a75",
+                        "tertiary": "#a7d387",
+                        "on-secondary-fixed-variant": "#6d2486",
+                        "primary-fixed": "#cde5ff",
+                        "secondary": "#f0b0ff",
+                        "primary-fixed-dim": "#95ccff",
+                        "tertiary-fixed-dim": "#a7d387",
+                        "surface-container-high": "#262a32",
+                        "surface-container-lowest": "#0a0e15",
+                        "on-error": "#690005",
+                        "outline-variant": "#404750",
+                        "secondary-container": "#6d2486",
+                        "on-tertiary-fixed": "#0a2100",
+                        "inverse-primary": "#006399",
+                        "surface-container-highest": "#31353d",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#95ccff",
+                        "tertiary-container": "#8bb56c",
+                        "on-primary-fixed": "#001d32",
+                        "primary-container": "#61afef",
+                        "on-primary": "#003352",
+                        "background": "#0f131b",
+                        "secondary-fixed-dim": "#f0b0ff",
+                        "on-background": "#dfe2ed",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#2b5013",
+                        "secondary-fixed": "#fad7ff",
+                        "surface-container": "#1c2027",
+                        "surface-dim": "#0f131b",
+                        "primary": "#95ccff",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#163800",
+                        "inverse-surface": "#dfe2ed",
+                        "on-tertiary-container": "#23460a",
+                        "on-secondary-container": "#e796fe",
+                        "inverse-on-surface": "#2c3039",
+                        "on-secondary": "#54016d",
+                        "surface-bright": "#353942",
+                        "surface-container-low": "#181c23",
+                        "on-secondary-fixed": "#330044"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "edge-margin": "12px",
+                        "touch-target": "44px",
+                        "unit": "4px",
+                        "gutter": "8px"
+                    },
+                    "fontFamily": {
+                        "code-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "code-md": ["13px", { "lineHeight": "19px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "code-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-caps": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .terminal-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #404750 #0a0e15;
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: #0a0e15;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background-color: #404750;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md h-screen flex flex-col overflow-hidden pb-14 md:pb-0">
+<!-- TopAppBar (Mobile) -->
+<header class="w-full top-0 bg-surface text-primary border-b border-outline-variant flat no shadows transition-colors duration-200 flex justify-between items-center px-edge-margin h-touch-target md:hidden">
+<div class="flex items-center gap-gutter">
+<button class="text-primary hover:bg-surface-variant rounded-full p-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+</button>
+<span class="font-headline-lg font-bold text-primary">Project: core-engine</span>
+</div>
+</header>
+<!-- TopAppBar (Desktop / Web) -->
+<header class="hidden md:flex w-full top-0 bg-surface text-primary border-b border-outline-variant flat no shadows transition-colors duration-200 justify-between items-center px-edge-margin h-touch-target">
+<div class="flex items-center gap-gutter">
+<span class="font-headline-lg font-bold text-primary">Project: core-engine</span>
+<nav class="ml-8 flex gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 px-2 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+<span class="font-label-caps uppercase">Editor</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 px-2 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps uppercase">Explorer</span>
+</a>
+<a class="text-primary bg-primary-container/10 rounded px-2 py-1 flex items-center gap-2 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+<span class="font-label-caps uppercase">Run</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 px-2 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps uppercase">Settings</span>
+</a>
+</nav>
+</div>
+</header>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+<!-- Desktop SideNav Overlay (Hidden by default, standard pattern) -->
+<!-- Just reserving space logic for fluid grid -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface-container-low h-full relative">
+<!-- Run Controls Section -->
+<section class="p-edge-margin bg-surface-container-lowest border-b border-outline-variant flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-lg text-primary">Run Code</h2>
+<p class="font-code-sm text-outline mt-1">Target: src/main.rs</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary-container text-surface px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity w-full justify-center md:w-auto md:justify-start shadow-md">
+<span class="material-symbols-outlined text-2xl">play_arrow</span>
+<span class="font-headline-lg">Run</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Terminal/Console Area -->
+<section class="flex-1 flex flex-col min-h-0 bg-[#000000]">
+<!-- Tabs -->
+<div class="flex items-center px-edge-margin bg-surface-container-high border-b border-outline-variant overflow-x-auto no-scrollbar">
+<button class="px-4 py-2 font-body-md text-primary border-b-2 border-primary bg-surface-bright flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+                        Output
+                    </button>
+</div>
+<!-- Output Container -->
+<div class="flex-1 overflow-y-auto p-4 terminal-scroll">
+<pre class="font-code-md text-[#ABB2BF] whitespace-pre-wrap"><code><span class="text-[#61AFEF]">[INFO]</span> Compiling core-engine v0.1.0 (/app/src)
+<span class="text-[#61AFEF]">[INFO]</span> Finished dev [unoptimized + debuginfo] target(s) in 2.34s
+<span class="text-[#61AFEF]">[INFO]</span> Running `target/debug/core-engine`
+
+<span class="text-[#98C379]">&gt; core-engine initializing...</span>
+<span class="text-[#98C379]">&gt; Loading configurations: OK</span>
+<span class="text-[#98C379]">&gt; Connecting to local database: OK</span>
+
+<span class="text-[#E5C07B]">[WARN]</span> Port 8080 is in use, falling back to 8081.
+
+Listening on http://127.0.0.1:8081
+Hello World! Incoming connection from 127.0.0.1:54321
+Request: GET /api/v1/status
+Response: 200 OK (4ms)
+
+<span class="animate-pulse">_</span></code></pre>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container border-t border-outline-variant flat no shadows flex justify-around items-center h-14 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+<span class="font-label-caps mt-1">Editor</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps mt-1">Explorer</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+<span class="font-label-caps mt-1">Run</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

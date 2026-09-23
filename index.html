@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nomad IDE</title>
+    <style>
+      :root {
+        --color-canvas: #f5f5f5;
+        --color-paper: #ffffff;
+        --color-surface-alt: #fafafa;
+        --color-ink: #0a0a0a;
+        --color-ink-soft: #171717;
+        --color-mid-gray: #737373;
+        --color-hairline: #e5e5e5;
+        --color-ember: #e7000b;
+        --font-geist: 'Geist', 'Inter', 'Segoe UI', sans-serif;
+        --font-mono: 'JetBrains Mono', 'SFMono-Regular', 'Consolas', monospace;
+        --radius-card: 24px;
+        --radius-button: 18px;
+        --radius-input: 18px;
+        --shadow-subtle: 0 0 0 1px rgba(23, 23, 23, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--color-canvas);
+        color: var(--color-ink);
+        font-family: var(--font-geist);
+      }
+
+      body {
+        min-height: 100vh;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .app-shell {
+        display: flex;
+        flex-direction: column;
+        width: min(1280px, calc(100% - 32px));
+        height: calc(100vh - 32px);
+        margin: 16px auto;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid var(--color-hairline);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-subtle);
+        overflow: hidden;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--color-hairline);
+        background: rgba(255, 255, 255, 0.66);
+        backdrop-filter: blur(10px);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+      }
+
+      .brand-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+        background: var(--color-ink-soft);
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid transparent;
+        border-radius: var(--radius-button);
+        padding: 0 12px;
+        height: 36px;
+        min-width: 84px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+      }
+
+      .btn:hover { transform: translateY(-1px); }
+      .btn:active { transform: translateY(0); }
+
+      .btn.ghost {
+        background: var(--color-paper);
+        color: var(--color-ink);
+        border-color: var(--color-hairline);
+      }
+
+      .btn.secondary {
+        background: var(--color-canvas);
+        color: var(--color-ink);
+      }
+
+      .btn.primary {
+        background: var(--color-ink-soft);
+        color: #fafafa;
+      }
+
+      .workspace {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .workspace.hidden { display: none; }
+
+      .sidebar {
+        width: 260px;
+        border-right: 1px solid var(--color-hairline);
+        background: var(--color-surface-alt);
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-head {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--color-mid-gray);
+        margin-bottom: 12px;
+      }
+
+      .file-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .file-item {
+        border: 1px solid transparent;
+        background: transparent;
+        border-radius: 10px;
+        padding: 10px 12px;
+        text-align: left;
+        color: var(--color-ink);
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .file-item.active {
+        background: rgba(10, 10, 10, 0.04);
+        border-color: var(--color-hairline);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 12px;
+        border-top: 1px solid var(--color-hairline);
+        color: var(--color-mid-gray);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .explorer-page {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      .explorer-page.hidden { display: none; }
+
+      .explorer-panel {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        background: rgba(255,255,255,0.2);
+      }
+
+      .explorer-header {
+        padding: 20px 24px 12px;
+        border-bottom: 1px solid var(--color-hairline);
+      }
+
+      .explorer-header h1 {
+        margin: 0;
+        font-size: 36px;
+        letter-spacing: -0.05em;
+        line-height: 1.1;
+      }
+
+      .explorer-body {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        padding: 22px 24px 24px;
+      }
+
+      .project-card {
+        border: 1px solid var(--color-hairline);
+        background: var(--color-paper);
+        border-radius: var(--radius-card);
+        padding: 18px;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      .project-card h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        letter-spacing: -0.025em;
+      }
+
+      .project-card p {
+        margin: 0 0 16px;
+        color: var(--color-mid-gray);
+        line-height: 1.6;
+      }
+
+      .explorer-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 18px;
+      }
+
+      .explorer-file-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .explorer-file {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--color-hairline);
+        background: var(--color-surface-alt);
+        border-radius: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        text-align: left;
+        color: var(--color-ink);
+      }
+
+      .file-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .file-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 52px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: var(--color-canvas);
+        border: 1px solid var(--color-hairline);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .main-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        background: rgba(255,255,255,0.25);
+        position: relative;
+      }
+
+      .main-panel.hidden { display: none; }
+
+      .back-to-explorer {
+        appearance: none;
+        border: 1px solid var(--color-hairline);
+        background: var(--color-paper);
+        color: var(--color-ink);
+        border-radius: 999px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .editor-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--color-hairline);
+        background: rgba(255,255,255,0.45);
+      }
+
+      .editor-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .file-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--color-ink);
+        font-weight: 500;
+      }
+
+      .file-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--color-ink-soft);
+      }
+
+      .editor-surface {
+        flex: 1;
+        min-height: 0;
+        background: #f8f8f8;
+        transition: height 0.2s ease;
+      }
+
+      .editor-surface.fullscreen {
+        height: calc(100vh - 120px);
+      }
+
+      textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: var(--color-ink);
+        padding: 18px 20px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        line-height: 1.7;
+        letter-spacing: 0.01em;
+      }
+
+      .output-panel {
+        display: flex;
+        flex-direction: column;
+        height: 220px;
+        max-height: 220px;
+        border-top: 1px solid var(--color-hairline);
+        background: var(--color-paper);
+        transition: height 0.2s ease, max-height 0.2s ease, transform 0.2s ease;
+        overflow: hidden;
+      }
+
+      .output-panel.collapsed {
+        height: 44px;
+        max-height: 44px;
+      }
+
+      .output-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--color-hairline);
+        color: var(--color-mid-gray);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .toggle-output {
+        background: transparent;
+        border: 1px solid var(--color-hairline);
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-size: 11px;
+        color: var(--color-ink);
+        cursor: pointer;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 70px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: var(--color-canvas);
+        border: 1px solid var(--color-hairline);
+        color: var(--color-ink);
+      }
+
+      #outputBody {
+        flex: 1;
+        margin: 0;
+        padding: 16px;
+        overflow: auto;
+        white-space: pre-wrap;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--color-ink-soft);
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 10, 10, 0.18);
+        z-index: 20;
+      }
+
+      .modal.open {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(420px, calc(100% - 24px));
+        background: var(--color-paper);
+        border: 1px solid var(--color-hairline);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-subtle);
+        padding: 20px;
+      }
+
+      .modal-card h3 {
+        margin: 0 0 16px;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .field-group label {
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--color-mid-gray);
+      }
+
+      .field-group input,
+      .field-group select {
+        width: 100%;
+        border: 1px solid var(--color-hairline);
+        border-radius: var(--radius-input);
+        background: var(--color-surface-alt);
+        padding: 10px 12px;
+        color: var(--color-ink);
+        font: inherit;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      @media (max-width: 840px) {
+        .app-shell {
+          width: min(100% - 16px, 1280px);
+          height: calc(100vh - 16px);
+          margin: 8px auto;
+        }
+
+        .workspace {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid var(--color-hairline);
+        }
+
+        .topbar {
+          padding: 12px 14px;
+        }
+
+        .topbar-actions {
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">N</span>
+          <span>Nomad IDE</span>
+        </div>
+
+        <div class="topbar-actions"></div>
+      </header>
+
+      <div class="explorer-page" id="explorerPage">
+        <div class="explorer-panel">
+          <div class="explorer-header">
+            <div class="explorer-actions">
+              <button class="btn primary" id="newFileButton" type="button">New file</button>
+            </div>
+            <h1>Explorer</h1>
+          </div>
+
+          <div class="explorer-body">
+            <div class="project-card">
+              <h2>Project</h2>
+              <p>Open a file to start editing in the fullscreen workspace.</p>
+
+              <div class="explorer-file-list" id="explorerFileList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace hidden" id="workspace">
+        <main class="main-panel">
+          <div class="editor-header">
+            <div class="file-badge">
+              <span class="file-dot"></span>
+              <span id="currentFile">Main.java</span>
+            </div>
+
+            <div class="editor-actions">
+              <button class="btn secondary" id="saveButton" type="button">Save</button>
+              <button class="btn primary" id="runButton" type="button">Run</button>
+              <button type="button" class="back-to-explorer" id="backToExplorer">Explorer</button>
+            </div>
+          </div>
+
+          <div class="editor-surface">
+            <textarea id="codeEditor" spellcheck="false" aria-label="Code editor"></textarea>
+          </div>
+
+          <div class="output-panel collapsed" id="outputPanel">
+            <div class="output-header">
+              <span>Output</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="status-pill" id="statusText">Ready</span>
+                <button class="toggle-output" id="toggleOutput" type="button">Open</button>
+              </div>
+            </div>
+            <pre id="outputBody">No output yet.</pre>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal" id="createFileModal" aria-hidden="true">
+      <div class="modal-card">
+        <h3>Create file</h3>
+
+        <div class="field-group">
+          <label for="newFileName">File name</label>
+          <input id="newFileName" type="text" placeholder="my_program" />
+        </div>
+
+        <div class="field-group">
+          <label for="newFileLanguage">Language</label>
+          <select id="newFileLanguage">
+            <option value="java">Java</option>
+            <option value="python">Python</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn ghost" id="cancelFileCreate" type="button">Cancel</button>
+          <button class="btn primary" id="confirmFileCreate" type="button">Create</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const editor = document.getElementById('codeEditor');
+      const outputBody = document.getElementById('outputBody');
+      const currentFileEl = document.getElementById('currentFile');
+      const statusText = document.getElementById('statusText');
+      const runButton = document.getElementById('runButton');
+      const saveButton = document.getElementById('saveButton');
+      const outputPanel = document.getElementById('outputPanel');
+      const toggleOutput = document.getElementById('toggleOutput');
+      const workspace = document.getElementById('workspace');
+      const explorerPage = document.getElementById('explorerPage');
+      const explorerFileList = document.getElementById('explorerFileList');
+      const backToExplorer = document.getElementById('backToExplorer');
+      const newFileButton = document.getElementById('newFileButton');
+      const createFileModal = document.getElementById('createFileModal');
+      const newFileName = document.getElementById('newFileName');
+      const newFileLanguage = document.getElementById('newFileLanguage');
+      const cancelFileCreate = document.getElementById('cancelFileCreate');
+      const confirmFileCreate = document.getElementById('confirmFileCreate');
+
+      let currentLanguage = 'java';
+      let currentFile = 'Main.java';
+
+      const templates = {
+        java: `public class Main {
+  public static void main(String[] args) {
+    System.out.println("Hello from Nomad IDE");
+  }
+}`,
+        python: `print("Hello from Nomad IDE")\nfor i in range(3):\n    print(i)`
+      };
+
+      function getStoredFiles() {
+        try {
+          const saved = JSON.parse(localStorage.getItem('nomad-ide-files') || 'null');
+          if (saved && Array.isArray(saved) && saved.length) {
+            return saved;
+          }
+        } catch (error) {
+          console.warn('Failed to read saved IDE files: ', error);
+        }
+
+        const fallback = [
+          { name: 'Main.java', language: 'java', content: templates.java },
+          { name: 'main.py', language: 'python', content: templates.python }
+        ];
+        localStorage.setItem('nomad-ide-files', JSON.stringify(fallback));
+        return fallback;
+      }
+
+      function persistFiles(files) {
+        localStorage.setItem('nomad-ide-files', JSON.stringify(files));
+      }
+
+      function renderExplorerFiles() {
+        const files = getStoredFiles();
+        explorerFileList.innerHTML = '';
+
+        files.forEach((file) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'explorer-file';
+          button.dataset.file = file.name;
+          button.dataset.language = file.language;
+          button.innerHTML = `
+            <span class="file-meta">
+              <span class="file-dot"></span>
+              <span>${file.name}</span>
+            </span>
+            <span class="file-tag">${file.language === 'java' ? 'Java' : 'Py'}</span>
+          `;
+
+          button.addEventListener('click', () => {
+            openEditor(file.name, file.language);
+          });
+
+          explorerFileList.appendChild(button);
+        });
+      }
+
+      function openEditor(fileName, language) {
+        currentLanguage = language;
+        currentFile = fileName;
+
+        currentFileEl.textContent = currentFile;
+        const files = getStoredFiles();
+        const found = files.find((file) => file.name === currentFile && file.language === language);
+        const content = found ? found.content : templates[language] || '';
+        editor.value = content;
+        outputBody.textContent = 'No output yet.';
+        statusText.textContent = 'Ready';
+        explorerPage.classList.add('hidden');
+        workspace.classList.remove('hidden');
+      }
+
+      function showExplorer() {
+        explorerPage.classList.remove('hidden');
+        workspace.classList.add('hidden');
+      }
+
+      function saveCurrentFile() {
+        const files = getStoredFiles();
+        const index = files.findIndex((file) => file.name === currentFile && file.language === currentLanguage);
+
+        if (index >= 0) {
+          files[index].content = editor.value;
+        } else {
+          files.push({ name: currentFile, language: currentLanguage, content: editor.value });
+        }
+
+        persistFiles(files);
+        renderExplorerFiles();
+        statusText.textContent = 'Saved';
+      }
+
+      function normalizeFileName(inputName, language) {
+        const trimmed = (inputName || '').trim();
+        if (!trimmed) {
+          return '';
+        }
+
+        const sanitized = trimmed.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_.-]/g, '_');
+        const extension = language === 'python' ? '.py' : '.java';
+        const finalName = sanitized.toLowerCase().endsWith(extension)
+          ? sanitized
+          : `${sanitized}${extension}`;
+
+        return finalName;
+      }
+
+      function handleCreateFile() {
+        const fileName = normalizeFileName(newFileName.value, newFileLanguage.value);
+        if (!fileName) {
+          statusText.textContent = 'Name required';
+          return;
+        }
+
+        const files = getStoredFiles();
+        const exists = files.some((file) => file.name === fileName && file.language === newFileLanguage.value);
+        if (exists) {
+          statusText.textContent = 'File exists';
+          return;
+        }
+
+        const newFile = {
+          name: fileName,
+          language: newFileLanguage.value,
+          content: templates[newFileLanguage.value]
+        };
+
+        files.push(newFile);
+        persistFiles(files);
+        renderExplorerFiles();
+        createFileModal.classList.remove('open');
+        openEditor(fileName, newFileLanguage.value);
+      }
+
+      async function runCode() {
+        statusText.textContent = 'Running';
+        outputBody.textContent = 'Compiling...';
+
+        saveCurrentFile();
+
+        const response = await fetch('/api/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            language: currentLanguage,
+            filename: currentFile,
+            code: editor.value
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          outputBody.textContent = result.error || 'Execution failed';
+          statusText.textContent = 'Error';
+          return;
+        }
+
+        outputBody.textContent = result.output || 'No output';
+        statusText.textContent = result.exitCode === 0 ? 'Success' : 'Failed';
+      }
+
+      if (runButton) runButton.addEventListener('click', runCode);
+      if (saveButton) saveButton.addEventListener('click', saveCurrentFile);
+      if (backToExplorer) backToExplorer.addEventListener('click', showExplorer);
+      if (newFileButton) newFileButton.addEventListener('click', () => {
+        createFileModal.classList.add('open');
+        newFileName.value = '';
+        newFileLanguage.value = 'java';
+      });
+      cancelFileCreate.addEventListener('click', () => createFileModal.classList.remove('open'));
+      confirmFileCreate.addEventListener('click', handleCreateFile);
+      createFileModal.addEventListener('click', (event) => {
+        if (event.target === createFileModal) createFileModal.classList.remove('open');
+      });
+
+      toggleOutput.addEventListener('click', () => {
+        const isCollapsed = outputPanel.classList.toggle('collapsed');
+        toggleOutput.textContent = isCollapsed ? 'Open' : 'Hide';
+      });
+
+      editor.addEventListener('input', () => {
+        statusText.textContent = 'Unsaved';
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'b') {
+          event.preventDefault();
+          outputPanel.classList.toggle('collapsed');
+          toggleOutput.textContent = outputPanel.classList.contains('collapsed') ? 'Open' : 'Hide';
+        }
+      });
+
+      renderExplorerFiles();
+      showExplorer();
+    </script>
+  </body>
+</html>
