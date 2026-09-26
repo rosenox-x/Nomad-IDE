@@ -104,6 +104,76 @@ If port 3000 is unavailable, the app will automatically retry on the next availa
 
 ---
 
+## Free Remote Compiler Server
+
+The Android app is a client. Java and Python execution happens on the compiler server, so the phone must be able to reach the server over HTTPS or a reachable LAN URL.
+
+This repository includes a Docker deployment for Render:
+
+- [Dockerfile](Dockerfile) installs Node.js, Python 3, and JDK 17
+- [render.yaml](render.yaml) defines the free web service and `/api/health` check
+- [.dockerignore](.dockerignore) keeps Android/build/runtime files out of the image
+
+### Deploy on Render
+
+1. Push the repository to GitHub.
+2. Open Render and choose **New → Blueprint**.
+3. Connect `https://github.com/rosenox-x/Nomad-IDE`.
+4. Select the repository branch containing `render.yaml`.
+5. Create the service.
+6. Wait for the deployment to become healthy.
+
+Render will provide a URL similar to:
+
+```text
+https://nomad-ide-compiler.onrender.com
+```
+
+Verify it before using the Android app:
+
+```bash
+curl https://YOUR_RENDER_URL/api/health
+```
+
+Expected response:
+
+```json
+{
+  "ok": true,
+  "status": "running"
+}
+```
+
+### Connect the Android app
+
+1. Open the app's Settings page.
+2. Open **Code execution**.
+3. Enter the full Render URL, for example:
+
+```text
+https://nomad-ide-compiler.onrender.com
+```
+
+4. Tap **Test connection**.
+5. Once connected, open a Java or Python file and tap Run.
+
+The URL is stored in the app's local settings. Do not add a trailing slash.
+
+### Free-tier uptime limitation
+
+Render's free web services can spin down after inactivity and cold-start when requested. That means they are not guaranteed to stay continuously awake 24/7 on the free tier. The app handles the resulting delay and timeout visibly, but guaranteed always-on availability requires a paid instance or an always-free VM provider with an uptime policy that supports it.
+
+### Security notes
+
+The remote API executes submitted Java and Python code. Treat the deployment as a personal development server:
+
+- do not expose it publicly with sensitive data
+- do not use it for untrusted users without authentication and sandboxing
+- add authentication, rate limits, CPU/memory limits, and isolated containers before public use
+- keep execution timeouts enabled
+
+---
+
 ## Usage
 
 ### Explorer view

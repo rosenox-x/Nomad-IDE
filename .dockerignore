@@ -1,0 +1,10 @@
+.git
+.gitignore
+node_modules
+android
+projects
+www
+*.apk
+*.aab
+.vscode
+.kilo

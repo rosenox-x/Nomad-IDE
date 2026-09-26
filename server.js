@@ -1,10 +1,12 @@
 const express = require('express');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
 
 const app = express();
 const DEFAULT_PORTS = [Number(process.env.PORT) || 3000, 4173, 4174, 8000, 8080, 0];
+const HOST = process.env.HOST || '0.0.0.0';
 const PROJECTS_DIR = path.join(__dirname, 'projects');
 const LOCAL_JDK_DIR = path.join(process.env.HOME || '', '.local', 'jdk');
 const JAVA_HOME = fs.existsSync(path.join(LOCAL_JDK_DIR, 'jdk-17.0.12+7'))
@@ -15,7 +17,32 @@ const JAVA_BIN = JAVA_HOME ? path.join(JAVA_HOME, 'bin') : '';
 fs.mkdirSync(PROJECTS_DIR, { recursive: true });
 
 app.use(express.json({ limit: '10mb' }));
+const capacitorOrigins = new Set(['capacitor://localhost', 'ionic://localhost', 'http://localhost', 'https://localhost']);
+app.use((req, res, next) => {
+  const origin = req.get('origin');
+  if (origin && capacitorOrigins.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.get('access-control-request-private-network') === 'true') {
+      res.setHeader('Access-Control-Allow-Private-Network', 'true');
+    }
+  }
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
 app.use(express.static(__dirname));
+
+function getLanAddresses() {
+  return Object.values(os.networkInterfaces())
+    .flat()
+    .filter((network) => network && network.family === 'IPv4' && !network.internal)
+    .map((network) => network.address);
+}
 
 function ensureProjectDir() {
   fs.mkdirSync(PROJECTS_DIR, { recursive: true });
@@ -167,8 +194,13 @@ function startServer() {
 
   const tryListen = () => {
     const port = DEFAULT_PORTS[portIndex];
-    const server = app.listen(port, '127.0.0.1', () => {
-      console.log(`Nomad IDE running at http://127.0.0.1:${server.address().port}`);
+    const server = app.listen(port, HOST, () => {
+      const address = server.address();
+      const host = address && address.address && address.address !== '0.0.0.0' ? address.address : '127.0.0.1';
+      console.log(`Nomad IDE running at http://${host}:${address.port}`);
+      for (const lanAddress of getLanAddresses()) {
+        console.log(`Android compiler server: http://${lanAddress}:${address.port}`);
+      }
     });
 
     server.on('error', (err) => {
